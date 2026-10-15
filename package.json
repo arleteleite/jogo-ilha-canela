@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "name": "jogo-convite-canela",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "preview": "vite preview",
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "sharp": "^0.35.5",
+        "vite": "^8.3.4"
+    }
+}

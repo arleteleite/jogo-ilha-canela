@@ -1,0 +1,105 @@
+/* Cores e base visual. Mobile-first: o layout se adapta ao celular primeiro. */
+:root {
+  --cor-fundo: #14202b;
+  --cor-texto: #f4efe1;
+  --cor-destaque: #f2c14e;
+  --cor-botao: #2e7d6b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.jogo {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.cena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+}
+
+.cena h1 {
+  font-size: 1.6rem;
+  color: var(--cor-destaque);
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--cor-botao);
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+/* Botão de reinício: discreto, sempre no canto superior direito. */
+.botao-reiniciar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
+  padding: 6px 12px;
+  border: 1px solid var(--cor-destaque);
+  background: rgba(20, 32, 43, 0.85);
+  color: var(--cor-texto);
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.botao-reiniciar[hidden] {
+  display: none;
+}
+
+/* Tela de carregamento, cobrindo o jogo até as imagens ficarem prontas. */
+.tela-carregamento {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--cor-fundo);
+}
+
+.tela-carregamento .barra-progresso {
+  width: min(260px, 70vw);
+}
+
+.tela-carregamento .barra-preenchimento {
+  transition: width 0.2s linear;
+}
+
+/* Redução de movimento: o sistema pede menos animação. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

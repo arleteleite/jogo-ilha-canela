@@ -1,0 +1,626 @@
+/* Cenas com imagem de fundo (título e escolha dos companheiros). */
+.cena-tela {
+  position: relative;
+  min-height: 100vh;
+  max-width: none;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--cor-fundo);
+}
+
+/* Véu escuro sobre o cenário, para o texto e as cartas ficarem legíveis. */
+.cena-tela::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(20, 32, 43, 0.35), rgba(20, 32, 43, 0.9));
+  pointer-events: none;
+}
+
+.cena-tela > * {
+  position: relative;
+}
+
+.texto-introducao {
+  margin: 0;
+  max-width: 340px;
+  line-height: 1.5;
+}
+
+/* Pixel art: mantém as bordas nítidas em qualquer tamanho de tela. */
+.personagem {
+  height: min(42vh, 340px);
+  width: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+
+.personagem-pequeno {
+  height: min(26vh, 220px);
+}
+
+.contador {
+  margin: 0;
+  color: var(--cor-destaque);
+  font-weight: bold;
+}
+
+.confirmacao {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--cor-destaque);
+}
+
+.cartas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.carta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: rgba(20, 32, 43, 0.88);
+  color: var(--cor-texto);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.carta:hover {
+  border-color: rgba(242, 193, 78, 0.5);
+}
+
+.carta.selecionada {
+  border-color: var(--cor-destaque);
+  background: rgba(46, 125, 107, 0.6);
+}
+
+/* Depois da segunda escolha, as cartas não respondem mais ao toque. */
+.carta.travada {
+  cursor: default;
+}
+
+.carta.travada:not(.selecionada) {
+  opacity: 0.45;
+}
+
+.carta-imagem {
+  height: 110px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.carta-descricao {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.carta-habilidade {
+  font-size: 0.75rem;
+  color: var(--cor-destaque);
+}
+
+/* Marcador exibido quando a imagem de um animal ainda não existe. */
+.marcador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 110px;
+  width: 100%;
+  border: 2px dashed var(--cor-destaque);
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+/* Travessia: canvas ocupa a largura da tela, com barra de progresso e falas acima. */
+.cena-travessia {
+  max-width: 480px;
+  padding: 12px 12px 16px;
+  gap: 10px;
+}
+
+.barra-progresso {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(20, 32, 43, 0.6);
+  overflow: hidden;
+}
+
+.barra-preenchimento {
+  height: 100%;
+  width: 0%;
+  background: var(--cor-destaque);
+  transition: width 0.2s linear;
+}
+
+.fala-travessia {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+}
+
+.canvas-travessia {
+  display: block;
+  width: 100%;
+  height: min(62vh, 520px);
+  border-radius: 12px;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.dica {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+/* Ilha do Canela: chegada e piada no topo, semente no meio, Leo embaixo. */
+.cena-ilha {
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 32px 16px 24px;
+}
+
+.caixa-texto {
+  max-width: 340px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 2px solid var(--cor-destaque);
+  border-radius: 12px;
+  background: rgba(20, 32, 43, 0.88);
+  line-height: 1.5;
+}
+
+.caixa-texto p {
+  margin: 0;
+}
+
+.caixa-texto .piada {
+  margin-top: 8px;
+  color: var(--cor-destaque);
+}
+
+.area-semente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Semente: esfera dourada que pulsa, para chamar a atenção sem texto extra. */
+.semente {
+  width: 90px;
+  height: 90px;
+  padding: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6c8, #f2c14e 45%, #b8860b 85%);
+  box-shadow: 0 0 22px 8px rgba(242, 193, 78, 0.5);
+  animation: pulsar-semente 1.8s ease-in-out infinite;
+  cursor: pointer;
+}
+
+@keyframes pulsar-semente {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 18px 6px rgba(242, 193, 78, 0.45);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 32px 12px rgba(242, 193, 78, 0.75);
+  }
+}
+
+/* Semente: a sequência de plantio. Cada etapa é uma classe na seção (etapa-*). */
+.cena-semente {
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.cena-semente .palco {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: min(56vh, 440px);
+  overflow: hidden;
+}
+
+.palco > *,
+.raizes > *,
+.planta > *,
+.particulas > * {
+  position: absolute;
+}
+
+.solo {
+  left: 50%;
+  bottom: 30px;
+  width: 70%;
+  height: 44px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #8a5a2b 0%, #5c3a1c 70%, transparent 72%);
+}
+
+/* A semente cai do alto até o solo. Depois que as raízes surgem, ela desaparece. */
+.grao {
+  left: 50%;
+  bottom: 62px;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6c8, #f2c14e 50%, #b8860b 90%);
+  opacity: 0;
+}
+
+.etapa-cair .grao {
+  animation: cair-semente 0.9s ease-in forwards;
+}
+
+@keyframes cair-semente {
+  0% {
+    opacity: 1;
+    transform: translateY(-260px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.etapa-raizes .grao {
+  animation: sumir-semente 0.8s ease-out forwards;
+}
+
+@keyframes sumir-semente {
+  to {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* Brilho mágico que se expande no solo. */
+.brilho {
+  left: 50%;
+  bottom: 40px;
+  width: 120px;
+  height: 40px;
+  margin-left: -60px;
+  border: 3px solid rgba(255, 220, 120, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(242, 193, 78, 0.8);
+  opacity: 0;
+  transform: scale(0.2);
+}
+
+.etapa-brilho .brilho {
+  animation: brilhar 1s ease-out forwards;
+}
+
+@keyframes brilhar {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(1.6);
+  }
+}
+
+/* Raízes: linhas finas que crescem a partir do centro. */
+.raizes {
+  left: 50%;
+  bottom: 40px;
+  width: 140px;
+  height: 50px;
+  margin-left: -70px;
+}
+
+.raiz {
+  left: 50%;
+  bottom: 0;
+  width: 3px;
+  height: 42px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: #6b4a2b;
+  transform-origin: bottom center;
+  transform: rotate(var(--angulo)) scaleY(0);
+}
+
+.etapa-raizes .raiz {
+  animation: crescer-raiz 0.9s ease-out forwards;
+}
+
+@keyframes crescer-raiz {
+  to {
+    transform: rotate(var(--angulo)) scaleY(1);
+  }
+}
+
+/* Planta: broto, caule, folhas e flor, na mesma base (bottom: 40px). */
+.planta {
+  left: 50%;
+  bottom: 40px;
+  width: 0;
+  height: 0;
+}
+
+.broto {
+  left: -14px;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  background: #66bb6a;
+  transform: scale(0);
+  transform-origin: bottom left;
+}
+
+.etapa-raizes .broto {
+  animation: surgir 0.6s ease-out 0.6s forwards;
+}
+
+@keyframes surgir {
+  to {
+    transform: scale(1);
+  }
+}
+
+.caule {
+  left: -4px;
+  bottom: 0;
+  width: 8px;
+  height: 0;
+  border-radius: 4px;
+  background: #4caf50;
+}
+
+.etapa-crescer .caule {
+  animation: alongar-caule 1.6s ease-out forwards;
+}
+
+@keyframes alongar-caule {
+  to {
+    height: 170px;
+  }
+}
+
+.folha {
+  width: 56px;
+  height: 26px;
+  border-radius: 50% 0 50% 0;
+  background: #43a047;
+  opacity: 0;
+}
+
+.folha-esquerda {
+  left: -58px;
+  bottom: 90px;
+  transform: rotate(-20deg);
+  transform-origin: right bottom;
+}
+
+.folha-direita {
+  left: 4px;
+  bottom: 118px;
+  transform: rotate(20deg);
+  transform-origin: left bottom;
+}
+
+.etapa-crescer .folha {
+  animation: abrir-folha 0.8s ease-out 1.2s forwards;
+}
+
+@keyframes abrir-folha {
+  from {
+    opacity: 0;
+    scale: 0.2;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* Flor amarela do Cerrado, no topo da planta. */
+.flor {
+  left: -30px;
+  bottom: 186px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffd23f;
+  box-shadow: inset 0 0 0 6px #e8572a;
+  transform: scale(0);
+}
+
+.etapa-crescer .flor {
+  animation: abrir-flor 0.6s ease-out 2s forwards;
+}
+
+@keyframes abrir-flor {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Partículas de luz que sobem durante o crescimento. */
+.particulas {
+  left: 50%;
+  bottom: 60px;
+  width: 0;
+  height: 0;
+}
+
+.particula {
+  left: 0;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff3a0;
+  box-shadow: 0 0 8px #ffe066;
+  opacity: 0;
+}
+
+.etapa-crescer .particula {
+  animation: subir-particula 1.6s ease-out var(--atraso) forwards;
+}
+
+@keyframes subir-particula {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), -260px);
+  }
+}
+
+/* Clarão suave que cobre a cena antes da revelação. */
+.clarao {
+  inset: -16px;
+  background: #fff7d1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.etapa-clarao .clarao {
+  animation: clarao 0.6s ease-out forwards;
+}
+
+@keyframes clarao {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Arlete surge ao lado da planta, com os dois ingressos. Pixel art, sem suavizar. */
+.arlete {
+  left: 56%;
+  bottom: 20px;
+  height: 58%;
+  width: auto;
+  opacity: 0;
+  image-rendering: pixelated;
+  transform: translateX(30px);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+
+.etapa-arlete .arlete {
+  animation: aparecer-arlete 0.9s ease-out forwards;
+}
+
+@keyframes aparecer-arlete {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.revelacao {
+  min-height: 3em;
+  margin: 0;
+  max-width: 340px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.etapa-arlete .revelacao {
+  opacity: 1;
+}
+
+.botao-convite {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.etapa-revelacao .botao-convite {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Convite final: cartão com a Arlete, nome e data do evento, e as respostas. */
+.cena-convite {
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.bloco-convite {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 360px;
+  padding: 20px 18px;
+  border: 2px solid var(--cor-destaque);
+  border-radius: 14px;
+  background: rgba(20, 32, 43, 0.9);
+}
+
+.bloco-convite[hidden] {
+  display: none;
+}
+
+.bloco-convite h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.missao {
+  margin: 0;
+  color: var(--cor-destaque);
+  font-weight: bold;
+}
+
+.data-evento {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.botoes-resposta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.botao-aceitar {
+  background: var(--cor-botao);
+}
+
+.botao-recusar {
+  background: #5a6670;
+}
